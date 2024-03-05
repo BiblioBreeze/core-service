@@ -2,7 +2,7 @@ package probes
 
 import (
 	"context"
-	"core-service/pkg/database"
+	"github.com/BiblioBreeze/core-service/pkg/database"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 	"time"

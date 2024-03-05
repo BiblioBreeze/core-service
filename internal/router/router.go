@@ -1,7 +1,7 @@
 package router
 
 import (
-	"core-service/internal/jsonutil"
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

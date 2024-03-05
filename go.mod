@@ -1,4 +1,4 @@
-module core-service
+module github.com/BiblioBreeze/core-service
 
 go 1.21
 
