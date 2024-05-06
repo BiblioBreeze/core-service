@@ -41,6 +41,6 @@ jobs:
           export VERSION="$(date '+%Y.%-m.')"${{ github.run_id }}
           
           docker buildx build . \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64 \
           --tag ghcr.io/bibliobreeze/${{ github.event.repository.name }}:$VERSION \
           --push

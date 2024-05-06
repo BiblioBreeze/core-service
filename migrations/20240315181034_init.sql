@@ -3,10 +3,10 @@
 CREATE TABLE users
 (
     id         bigserial PRIMARY KEY,
+    email      varchar(255),
     first_name varchar(255),
     last_name  varchar(255),
-    email      varchar(255),
-    phone      varchar(255)
+    password   varchar(255)
 );
 
 CREATE TABLE books

@@ -15,7 +15,7 @@ const (
 	serviceName = "core-service"
 )
 
-func New(isDevLoggerEnabled bool, setupProbes func(r chi.Router)) *chi.Mux {
+func New(isDevLoggerEnabled bool) *chi.Mux {
 	r := chi.NewRouter()
 
 	if isDevLoggerEnabled {
@@ -25,8 +25,6 @@ func New(isDevLoggerEnabled bool, setupProbes func(r chi.Router)) *chi.Mux {
 	r.Use(chiprom.NewMiddleware(serviceName))
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
-
-	setupProbes(r)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		jsonutil.MarshalResponse(w, http.StatusNotFound, jsonutil.NewError(3, "API method not found"))
@@ -38,6 +36,10 @@ func New(isDevLoggerEnabled bool, setupProbes func(r chi.Router)) *chi.Mux {
 
 	r.Get("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		promhttp.Handler().ServeHTTP(w, r)
+	})
+
+	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 	})
 
 	return r

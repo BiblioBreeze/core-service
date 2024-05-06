@@ -3,22 +3,22 @@ package main
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"flag"
 	"fmt"
 	core_service "github.com/BiblioBreeze/core-service"
+	"github.com/BiblioBreeze/core-service/internal/app/database"
+	userService "github.com/BiblioBreeze/core-service/internal/app/user"
 	"github.com/BiblioBreeze/core-service/internal/config"
-	"github.com/BiblioBreeze/core-service/internal/probes"
 	"github.com/BiblioBreeze/core-service/internal/router"
-	"github.com/BiblioBreeze/core-service/pkg/database"
 	"github.com/BiblioBreeze/core-service/pkg/server"
+	"github.com/BiblioBreeze/core-service/pkg/signal"
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
+	"golang.org/x/sync/errgroup"
 	"log/slog"
 	"os"
-	"os/signal"
-	"time"
 )
 
 var (
@@ -53,38 +53,40 @@ func main() {
 }
 
 func runApp(cfg *config.Config) error {
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
+	ctx := signal.Context()
 
-	db, err := database.New(context.Background(), cfg.DbDSN)
+	db, err := connectToPostgres(ctx, cfg.DbDSN)
 	if err != nil {
 		return err
 	}
 
-	r := router.New(*devLogger, probes.SetupFunc(db))
+	defer db.Close()
+
+	r := router.New(*devLogger)
 
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 
 	// booksService := books.New(...)
 
+	dbClient := database.NewClient(db)
+
 	r.Route("/api", func(r chi.Router) {
+		userService.Mount(r, dbClient)
 		// booksService.Routes(r)
 	})
 
 	srv := server.New(addr, r)
 
-	slog.Info("server was started successfully", slog.String("addr", addr))
+	g, gCtx := errgroup.WithContext(ctx)
 
-	<-quit
+	g.Go(func() error {
+		return srv.Run(gCtx)
+	})
 
-	ctx, shutdown := context.WithTimeout(context.Background(), 10*time.Second)
-	defer shutdown()
-
-	if err = srv.Shutdown(ctx); err != nil {
-		return errors.New("server shutdown failed")
+	if err = g.Wait(); err != nil {
+		slog.Error("an un-recoverable error occurred", slog.String("error", err.Error()))
+		return err
 	}
-
-	db.Close()
 
 	return nil
 }
@@ -129,4 +131,17 @@ func setUpLogger(isDevLoggerEnabled bool) {
 	}
 
 	slog.SetDefault(slog.New(handler))
+}
+
+func connectToPostgres(ctx context.Context, url string) (*pgxpool.Pool, error) {
+	db, err := pgxpool.New(ctx, url)
+	if err != nil {
+		return nil, fmt.Errorf("unable to connection to database: %s", err)
+	}
+
+	if err = db.Ping(ctx); err != nil {
+		return nil, fmt.Errorf("unable to ping database: %w", err)
+	}
+
+	return db, nil
 }
