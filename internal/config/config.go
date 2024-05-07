@@ -8,15 +8,17 @@ import (
 )
 
 const (
-	hostKey  = "WEB_HOST"
-	portKey  = "WEB_PORT"
-	dbDSNKey = "DB_DSN"
+	hostKey       = "WEB_HOST"
+	portKey       = "WEB_PORT"
+	dbDSNKey      = "DB_DSN"
+	jwtSigningKey = "JWT_SIGNING_KEY"
 )
 
 type Config struct {
-	Host  string
-	Port  int
-	DbDSN string
+	Host          string
+	Port          int
+	DbDSN         string
+	JWTSigningKey string
 }
 
 func (c *Config) setDefaults() {
@@ -31,6 +33,10 @@ func (c *Config) setDefaults() {
 func (c *Config) validate() error {
 	if c.DbDSN == "" {
 		return errors.New("DB_DSN must be present")
+	}
+
+	if c.JWTSigningKey == "" {
+		return errors.New("JWT_SIGNING_KEY must be present")
 	}
 
 	return nil
@@ -56,9 +62,10 @@ func New() (*Config, error) {
 	}
 
 	c := Config{
-		Host:  os.Getenv(hostKey),
-		Port:  portInt,
-		DbDSN: os.Getenv(dbDSNKey),
+		Host:          os.Getenv(hostKey),
+		Port:          portInt,
+		DbDSN:         os.Getenv(dbDSNKey),
+		JWTSigningKey: os.Getenv(jwtSigningKey),
 	}
 
 	c.setDefaults()

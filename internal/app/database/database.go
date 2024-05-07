@@ -8,6 +8,6 @@ type Client struct {
 	pool *pgxpool.Pool
 }
 
-func NewClient(pool *pgxpool.Pool) *Client {
+func New(pool *pgxpool.Pool) *Client {
 	return &Client{pool: pool}
 }
