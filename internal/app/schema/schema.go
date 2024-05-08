@@ -9,4 +9,12 @@ type User struct {
 }
 
 type Book struct {
+	ID              uint64  `db:"id"`
+	BelongsToUserID uint64  `db:"belongs_to_user_id"`
+	Name            string  `db:"name"`
+	Author          string  `db:"author"`
+	Genre           string  `db:"genre"`
+	Description     string  `db:"description"`
+	Latitude        float64 `db:"latitude"`
+	Longitude       float64 `db:"longitude"`
 }

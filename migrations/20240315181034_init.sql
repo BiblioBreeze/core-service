@@ -26,8 +26,9 @@ CREATE TABLE exchange_requests
 (
     id           bigserial PRIMARY KEY,
     from_user_id bigint REFERENCES users (id),
-    title        varchar(255),
-    condition    varchar(1000)
+    book_id      bigint REFERENCES books (id),
+    condition    varchar(1000),
+    exchanged    boolean
 );
 -- +goose StatementEnd
 

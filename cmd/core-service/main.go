@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	core_service "github.com/BiblioBreeze/core-service"
+	bookService "github.com/BiblioBreeze/core-service/internal/app/book"
 	"github.com/BiblioBreeze/core-service/internal/app/database"
 	tokenService "github.com/BiblioBreeze/core-service/internal/app/token"
 	userService "github.com/BiblioBreeze/core-service/internal/app/user"
@@ -67,14 +68,19 @@ func runApp(cfg *config.Config) error {
 
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 
-	// booksService := books.New(...)
-
 	dbClient := database.New(db)
 	tokenSvc := tokenService.New(cfg.JWTSigningKey)
 
 	r.Route("/api", func(r chi.Router) {
-		userService.Mount(r, dbClient, tokenSvc)
-		// booksService.Routes(r)
+		userService.Mount(
+			r,
+			dbClient,
+			tokenSvc,
+		)
+		bookService.Mount(
+			r.With(tokenSvc.AuthMiddleware()),
+			dbClient,
+		)
 	})
 
 	srv := server.New(addr, r)
