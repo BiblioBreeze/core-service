@@ -31,7 +31,7 @@ func (s *service) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = s.userStore.CreateUser(
+	err = s.store.CreateUser(
 		ctx,
 		schema.User{
 			Email:     req.Email,

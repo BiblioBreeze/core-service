@@ -28,7 +28,8 @@ CREATE TABLE exchange_requests
     from_user_id bigint REFERENCES users (id),
     book_id      bigint REFERENCES books (id),
     condition    varchar(1000),
-    exchanged    boolean
+    exchanged    boolean,
+    UNIQUE (from_user_id, book_id)
 );
 -- +goose StatementEnd
 

@@ -8,6 +8,7 @@ import (
 	core_service "github.com/BiblioBreeze/core-service"
 	bookService "github.com/BiblioBreeze/core-service/internal/app/book"
 	"github.com/BiblioBreeze/core-service/internal/app/database"
+	exchangeService "github.com/BiblioBreeze/core-service/internal/app/exchange"
 	tokenService "github.com/BiblioBreeze/core-service/internal/app/token"
 	userService "github.com/BiblioBreeze/core-service/internal/app/user"
 	"github.com/BiblioBreeze/core-service/internal/config"
@@ -78,6 +79,10 @@ func runApp(cfg *config.Config) error {
 			tokenSvc,
 		)
 		bookService.Mount(
+			r.With(tokenSvc.AuthMiddleware()),
+			dbClient,
+		)
+		exchangeService.Mount(
 			r.With(tokenSvc.AuthMiddleware()),
 			dbClient,
 		)

@@ -17,7 +17,7 @@ type listBook struct {
 func (s *service) list(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	books, err := s.bookStore.ListBooks(ctx)
+	books, err := s.store.ListBooks(ctx)
 	if err != nil {
 		jsonutil.MarshalResponse(w, http.StatusInternalServerError, jsonutil.NewError(2, "Failed to get books"))
 		return

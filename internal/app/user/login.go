@@ -28,7 +28,7 @@ func (s *service) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.userStore.GetUserByEmail(ctx, req.Email)
+	user, err := s.store.GetUserByEmail(ctx, req.Email)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			jsonutil.MarshalResponse(w, http.StatusBadRequest, jsonutil.NewError(5, "User not exists or password incorrect"))

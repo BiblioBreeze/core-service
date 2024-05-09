@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type userStore interface {
+type store interface {
 	CreateUser(ctx context.Context, user schema.User) error
 	GetUserByEmail(ctx context.Context, email string) (schema.User, error)
 }
@@ -16,13 +16,13 @@ type tokenService interface {
 }
 
 type service struct {
-	userStore    userStore
+	store        store
 	tokenService tokenService
 }
 
-func Mount(r chi.Router, userStore userStore, tokenService tokenService) {
+func Mount(r chi.Router, store store, tokenService tokenService) {
 	svc := &service{
-		userStore:    userStore,
+		store:        store,
 		tokenService: tokenService,
 	}
 

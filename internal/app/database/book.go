@@ -29,7 +29,7 @@ func (c *Client) ListBooks(ctx context.Context) ([]schema.Book, error) {
 		WHERE er.exchanged IS NULL;
 	`)
 	if err != nil {
-		return nil, fmt.Errorf("failed to list books: %w", err)
+		return nil, fmt.Errorf("failed to query books: %w", err)
 	}
 
 	books, err := pgx.CollectRows(rows, pgx.RowToStructByNameLax[schema.Book])

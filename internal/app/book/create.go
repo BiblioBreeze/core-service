@@ -27,7 +27,7 @@ func (s *service) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = s.bookStore.CreateBook(ctx, schema.Book{
+	err = s.store.CreateBook(ctx, schema.Book{
 		BelongsToUserID: token.UserIDFromContext(ctx),
 		Name:            req.Name,
 		Author:          req.Author,

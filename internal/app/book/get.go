@@ -29,7 +29,7 @@ func (s *service) get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	book, err := s.bookStore.GetBookByID(ctx, id)
+	book, err := s.store.GetBookByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			jsonutil.MarshalResponse(w, http.StatusBadRequest, jsonutil.NewError(5, "Book not found"))
