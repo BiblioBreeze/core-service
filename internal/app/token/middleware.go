@@ -2,9 +2,10 @@ package token
 
 import (
 	"context"
-	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 	"net/http"
 	"strings"
+
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 )
 
 const (
@@ -39,7 +40,6 @@ func (s *Service) AuthMiddleware() func(next http.Handler) http.Handler {
 			}
 
 			jsonutil.MarshalResponse(w, http.StatusUnauthorized, unauthorizedJsonErr)
-			return
 		})
 	}
 }

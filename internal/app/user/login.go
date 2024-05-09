@@ -2,10 +2,12 @@ package user
 
 import (
 	"errors"
-	"github.com/BiblioBreeze/core-service/internal/jsonutil"
+	"net/http"
+
 	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
+
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 )
 
 type loginRequest struct {

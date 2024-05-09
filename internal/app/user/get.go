@@ -2,11 +2,13 @@ package user
 
 import (
 	"errors"
-	"github.com/BiblioBreeze/core-service/internal/app/token"
-	"github.com/BiblioBreeze/core-service/internal/jsonutil"
-	"github.com/jackc/pgx/v5"
 	"net/http"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+
+	"github.com/BiblioBreeze/core-service/internal/app/token"
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 )
 
 type getUserResponse struct {

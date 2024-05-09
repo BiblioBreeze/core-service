@@ -1,20 +1,23 @@
 package router
 
 import (
-	"github.com/BiblioBreeze/core-service/internal/jsonutil"
+	"log/slog"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	slogchi "github.com/samber/slog-chi"
 	"github.com/yarlson/chiprom"
-	"log/slog"
-	"net/http"
+
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 )
 
 const (
 	serviceName = "core-service"
 )
 
+// New returns new chi.Mux.
 func New(isDevLoggerEnabled bool) *chi.Mux {
 	r := chi.NewRouter()
 
@@ -26,11 +29,11 @@ func New(isDevLoggerEnabled bool) *chi.Mux {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 
-	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+	r.NotFound(func(w http.ResponseWriter, _ *http.Request) {
 		jsonutil.MarshalResponse(w, http.StatusNotFound, jsonutil.NewError(3, "API method not found"))
 	})
 
-	r.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+	r.MethodNotAllowed(func(w http.ResponseWriter, _ *http.Request) {
 		jsonutil.MarshalResponse(w, http.StatusMethodNotAllowed, jsonutil.NewError(3, "HTTP method not allowed"))
 	})
 
@@ -38,7 +41,7 @@ func New(isDevLoggerEnabled bool) *chi.Mux {
 		promhttp.Handler().ServeHTTP(w, r)
 	})
 
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/health", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
 

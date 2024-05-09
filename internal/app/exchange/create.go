@@ -2,11 +2,13 @@ package exchange
 
 import (
 	"errors"
+	"net/http"
+
+	"github.com/jackc/pgx/v5"
+
 	"github.com/BiblioBreeze/core-service/internal/app/schema"
 	"github.com/BiblioBreeze/core-service/internal/app/token"
 	"github.com/BiblioBreeze/core-service/internal/jsonutil"
-	"github.com/jackc/pgx/v5"
-	"net/http"
 )
 
 type createRequest struct {

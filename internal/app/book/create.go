@@ -1,10 +1,11 @@
 package book
 
 import (
+	"net/http"
+
 	"github.com/BiblioBreeze/core-service/internal/app/schema"
 	"github.com/BiblioBreeze/core-service/internal/app/token"
 	"github.com/BiblioBreeze/core-service/internal/jsonutil"
-	"net/http"
 )
 
 type createRequest struct {

@@ -5,6 +5,15 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"log/slog"
+	"os"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/pressly/goose/v3"
+	"golang.org/x/sync/errgroup"
+
 	core_service "github.com/BiblioBreeze/core-service"
 	bookService "github.com/BiblioBreeze/core-service/internal/app/book"
 	"github.com/BiblioBreeze/core-service/internal/app/database"
@@ -15,13 +24,6 @@ import (
 	"github.com/BiblioBreeze/core-service/internal/router"
 	"github.com/BiblioBreeze/core-service/pkg/server"
 	"github.com/BiblioBreeze/core-service/pkg/signal"
-	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/pressly/goose/v3"
-	"golang.org/x/sync/errgroup"
-	"log/slog"
-	"os"
 )
 
 var (

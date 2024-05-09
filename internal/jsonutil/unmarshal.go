@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/go-playground/validator/v10"
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/go-playground/validator/v10"
 )
 
 const (
@@ -22,7 +23,10 @@ func Unmarshal(w http.ResponseWriter, r *http.Request, data interface{}) (int, e
 		return http.StatusUnsupportedMediaType, fmt.Errorf("content-type is not application/json")
 	}
 
-	defer r.Body.Close()
+	defer func() {
+		_ = r.Body.Close()
+	}()
+
 	r.Body = http.MaxBytesReader(w, r.Body, maxBodyBytes)
 
 	d := json.NewDecoder(r.Body)

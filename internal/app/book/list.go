@@ -1,10 +1,11 @@
 package book
 
 import (
+	"net/http"
+
 	"github.com/BiblioBreeze/core-service/internal/app/schema"
 	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 	"github.com/BiblioBreeze/core-service/pkg/utils/sliceutils"
-	"net/http"
 )
 
 type listBook struct {

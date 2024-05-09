@@ -3,8 +3,10 @@ package database
 import (
 	"context"
 	"fmt"
-	"github.com/BiblioBreeze/core-service/internal/app/schema"
+
 	"github.com/jackc/pgx/v5"
+
+	"github.com/BiblioBreeze/core-service/internal/app/schema"
 )
 
 func (c *Client) CreateUser(ctx context.Context, user schema.User) error {

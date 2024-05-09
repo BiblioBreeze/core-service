@@ -2,9 +2,11 @@ package user
 
 import (
 	"context"
-	"github.com/BiblioBreeze/core-service/internal/app/schema"
-	"github.com/go-chi/chi/v5"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+
+	"github.com/BiblioBreeze/core-service/internal/app/schema"
 )
 
 type store interface {

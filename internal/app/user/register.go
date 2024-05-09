@@ -1,10 +1,12 @@
 package user
 
 import (
+	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/BiblioBreeze/core-service/internal/app/schema"
 	"github.com/BiblioBreeze/core-service/internal/jsonutil"
-	"golang.org/x/crypto/bcrypt"
-	"net/http"
 )
 
 type registerRequest struct {

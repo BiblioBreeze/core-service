@@ -2,11 +2,13 @@ package book
 
 import (
 	"errors"
-	"github.com/BiblioBreeze/core-service/internal/jsonutil"
-	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
+
+	"github.com/BiblioBreeze/core-service/internal/jsonutil"
 )
 
 type getBookResponse struct {
