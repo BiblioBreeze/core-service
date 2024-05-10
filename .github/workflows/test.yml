@@ -18,3 +18,5 @@ jobs:
       - name: Run tests
         run: go test ./... --timeout 5m -race -coverprofile=coverage.txt -covermode=atomic
       - uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
