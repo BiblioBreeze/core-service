@@ -10,6 +10,7 @@ Implements core API for BiblioBreeze.
 docker-compose up -d
 
 export DB_DSN=postgresql://postgres@127.0.0.1:5432/postgres
+export JWT_SIGNING_KEY={SECRET}
 ```
 
 ### Migrate
